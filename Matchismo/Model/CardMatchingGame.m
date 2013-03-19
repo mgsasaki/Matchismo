@@ -41,6 +41,7 @@
                 self.cards[i] = card;
             }
         }
+        self.score = 0;
     }
     
     return self;
@@ -55,14 +56,16 @@
 #define MATCH_BONUS         4
 #define MISMATCH_PENALTY    2
 
-- (void)flipCardAtIndex:(NSUInteger)index
+- (NSString *)flipCardAtIndex:(NSUInteger)index
 {
     Card * card = [self cardAtIndex:index];
+    NSString *result = @"";
     
     if (!card.isUnplayable)
     {
         if (!card.isFaceUp)
         {
+            result = [NSString stringWithFormat:@"You flipped a %@", card.contents];
             for (Card *anotherCard in self.cards)
                 if (!anotherCard.isUnplayable && anotherCard.isFaceUp)
                 {
@@ -72,11 +75,13 @@
                         anotherCard.unplayable = YES;
                         card.unplayable = YES;
                         self.score += matchScore * MATCH_BONUS;
+                        result = [NSString stringWithFormat:@"Matched %@ & %@", anotherCard.contents, card.contents];
                     }
                     else
                     {
                         anotherCard.faceUp = NO;
                         self.score -= MISMATCH_PENALTY;
+                        result = [NSString stringWithFormat:@"%@ & %@ don't match", anotherCard.contents, card.contents];
                     }
                     break;
                 }
@@ -85,6 +90,7 @@
         }
         card.faceUp = !card.isFaceUp;
     }
+    return result;
 }
 
 @end

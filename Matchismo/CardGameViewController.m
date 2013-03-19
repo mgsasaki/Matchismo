@@ -16,6 +16,8 @@
 @property (weak, nonatomic) IBOutlet UILabel *scoreLabel;
 @property (strong, nonatomic) IBOutletCollection(UIButton) NSArray *cardButtons;
 @property (strong, nonatomic) CardMatchingGame *game;
+@property (weak, nonatomic) IBOutlet UILabel *resultLabel;
+@property (weak, nonatomic) IBOutlet UISegmentedControl *gameTypeControl;
 @end
 
 @implementation CardGameViewController
@@ -57,9 +59,34 @@
 
 - (IBAction)flipCard:(UIButton *)sender
 {
-    [self.game flipCardAtIndex:[self.cardButtons indexOfObject:sender]];
-    self.flipCount++;
+    NSString *result = [self.game flipCardAtIndex:[self.cardButtons indexOfObject:sender]];
+    self.resultLabel.text = result;
     [self updateUI];
+    self.flipCount++;
+    if (self.gameTypeControl.isEnabled)
+        self.gameTypeControl.enabled = NO;
 }
+
+- (IBAction)deal
+{
+    self.game = nil;
+    [self updateUI];
+    self.flipCount = 0;
+    self.resultLabel.text = @"New game!";
+    self.gameTypeControl.enabled = YES;
+}
+
+- (IBAction)switchGameType:(UISegmentedControl *)sender
+{
+    if (sender.selectedSegmentIndex == 1)
+    {
+        NSLog(@"3 Card game selected!\n");
+    }
+    else
+    {
+        NSLog(@"2 Card game selected!\n");
+    }
+}
+
 
 @end

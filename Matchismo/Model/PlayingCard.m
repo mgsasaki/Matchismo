@@ -14,14 +14,25 @@
 {
     int score = 0;
     
-    if (otherCards.count == 1)
+    for (PlayingCard *anotherCard in otherCards)
     {
-        PlayingCard *anotherCard = [otherCards lastObject];
-        if ([anotherCard.suit isEqualToString:self.suit])
-            score = 1;
+        if ([anotherCard.suit isEqualToString:self.suit]) {
+            score += 1;
+        }
         else if (anotherCard.rank == self.rank)
-            score = 4;
+        {
+            score += 4;
+        }
     }
+    
+//    if (otherCards.count == 1)
+//    {
+//        PlayingCard *anotherCard = [otherCards lastObject];
+//        if ([anotherCard.suit isEqualToString:self.suit])
+//            score = 1;
+//        else if (anotherCard.rank == self.rank)
+//            score = 4;
+//    }
     
     return score;
 }
